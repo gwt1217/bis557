@@ -15,9 +15,5 @@ linear_model(formula, data)
 An lm object
 }
 \description{
-This function passes parameters to the lm function.
-}
-\examples{
-fit <- linear_model(Sepal.Length ~., iris)
-summary(fit)
+This function passes arguments to the lm function.
 }

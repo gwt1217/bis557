@@ -1,4 +1,3 @@
-
 #' Fit a linear model
 #'
 #' @description This function passes arguments to the lm function.
