@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/kaneplusplus/bis557.svg?branch=master)](https://travis-ci.org/kaneplusplus/bis557)
+[![Build Status](https://travis-ci.org/wentinggao1217/bis557.svg?branch=master)](https://travis-ci.org/wentinggao1217/bis557)
 
 BIS557
 ===

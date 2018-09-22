@@ -19,5 +19,5 @@ The linear model is the "hello world" of machine learning models.
 ```{r}
 library(bis557)
 fit <- linear_model(Sepal.Length ~ ., iris)
-summary(fit)
+#summary(fit)
 ```
