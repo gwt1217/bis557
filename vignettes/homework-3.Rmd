@@ -1,17 +1,19 @@
 ---
 title: "Homework-3"
 author: "Wenting Gao"
-date: "`r Sys.Date()`"
-Imports: Matrix, glmnet
 output:
   html_document:
-    self_contained: yes
-    toc: true
+    df_print: paged
+Imports: glmnet,Matrix
 ---
 <!--
 %\VignetteEngine{knitr::rmarkdown}
 %\VignetteIndexEntry{The linear model vignette}
 -->
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(error = TRUE)
+```
 
 ## Problem 1 (P117.Q7)
 ```{r}
@@ -69,9 +71,9 @@ paste("bandwidth= ", i)),cex=0.5)
 
 ## Problem 5 (P200.Q6)
 
-```{r}
-library(Matrix)
-library(glmnet)
+```{r, echo=FALSE}
+
+#library(glmnet)
 # Check current KKT conditions for glmnet when 0 < alpha <= 1
 ## Args:
 # X: A numeric data matrix.
