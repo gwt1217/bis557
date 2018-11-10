@@ -38,20 +38,20 @@ kern_density <- function(x, h, x_new){
 #visualize different bandwidths
 
 # when training set and test set are random numbers from normal distribution
-x <- rnorm(1000, 0, 10)
-x_new <- sort(rnorm(200, 0, 10))
+x <- rnorm(1000, 0, 1)
+x_new <- sort(rnorm(200, 0, 1))
 par(mfrow=c(3,2))
 h = c(0.01,0.1, 0.5, 1, 1.5, 2)
 for (i in h){
   plot(x_new, kern_density(x,i,x_new), ylab = "Density", main = "Kernal density estimation", type = "l")  
   legend("topright",
        legend=c(
-paste("bandwidth= ", i)),cex=0.5)
+paste("bandwidth= ", i)),cex=0.6)
 }
 
 # when training set and test set are random numbers from uniform distribution
-x <- runif(1000, 0, 5)
-x_new <- sort(runif(200, 0, 5))
+x <- runif(1000, 0, 1)
+x_new <- sort(runif(200, 0, 1))
 par(mfrow=c(3,2))
 h = c(0.01,0.1, 0.5, 1, 1.5, 2)
 for (i in h)
@@ -59,7 +59,7 @@ for (i in h)
   plot(x_new, kern_density(x,i,x_new), ylab = "Density", main = "Kernal density estimation", type = "l")  
   legend("bottom",
        legend=c(
-paste("bandwidth= ", i)),cex=0.5)
+paste("bandwidth= ", i)),cex=0.6)
 }
 ```
 
@@ -72,7 +72,6 @@ paste("bandwidth= ", i)),cex=0.5)
 ## Problem 5 (P200.Q6)
 
 ```{r}
-
 library(glmnet)
 # Check current KKT conditions for glmnet when 0 < alpha <= 1
 ## Args:
@@ -92,7 +91,12 @@ check_kkt <- function(y, X, b, lambda) {
 # use iris as dataset
 x <- scale(model.matrix(Sepal.Length ~. -1, iris))
 y <- iris[,1]
-# implement lasso 
+# implement lasso
+# When alpha=1, it's a lasso regression
+# Check which variables violate KKT condition
+# x:A numeric data matrix.
+# y: Response vector.
+#Return: logical vector indicating where the KKT conditions have been violated
 lasso_reg_with_screening <- function(x, y){
   m1 <- cv.glmnet(x,y,alpha=1)
   #use 1se as the criteria to choose lambda
@@ -103,6 +107,6 @@ lasso_reg_with_screening <- function(x, y){
 lasso_reg_with_screening(x, y)
 ```
 
- Based on the KKT conditions for lasso regression, the lasso_reg_with_screening was created. The returned list of this function checks whether the KKT conditions are violated ('False' means no violation)
+The returned list of the function `lasso_reg_with_screening` checks whether the KKT conditions are violated ('False' indicates no violation)
 
- I used the iris dataset for testing when the lambda used was $lambda.1se$. None of the coefficient estimations from glmnet broke the KKT conditions.  
+I used the iris dataset for testing and the criteria of choosing `lambda` was `lambda.1se`. Since all returned values are false, none of the coefficient estimates from `glmnet` broke the KKT conditions.  
