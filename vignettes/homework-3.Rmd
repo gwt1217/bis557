@@ -71,9 +71,9 @@ paste("bandwidth= ", i)),cex=0.5)
 
 ## Problem 5 (P200.Q6)
 
-```{r, echo=FALSE}
+```{r}
 
-#library(glmnet)
+library(glmnet)
 # Check current KKT conditions for glmnet when 0 < alpha <= 1
 ## Args:
 # X: A numeric data matrix.
