@@ -1,0 +1,98 @@
+---
+title: "Homework-4"
+author: "Wenting Gao"
+output:
+  html_document:
+    df_print: paged
+---
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{The linear model vignette}
+-->
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(error = TRUE)
+```
+
+## CASL Number 2 in Exercises 5.8.
+The Hessian matrix in Equation 5.19 is $$H(l) = X^t'diag(p(1-p)X)$$
+where they are all inner product;
+
+Since $cond(A)=\frac{\sigma_{max}}{\sigma_min}$, an ill-conditioned Hessian is where condition number is much larger than that of $X'X$. The condition number of a matrix is the ratio of its largest and smallest singular value.\
+
+```{r}
+#Generate the specific matrix X:
+X <- matrix(c(1, 100, 100, 1), 2, 2)
+p <- c(0.5, 0.001)
+X
+p
+```
+First, calculate condition number of matrix $X'X$:
+```{r}
+sgvals<- svd(t(X)%*%X)[["d"]]
+cd_1 <- max(sgvals)/min(sgvals)
+cd_1
+```
+Then, calculate the logistic variation of hessian matrix and its condition number:
+```{r}
+h=t(X)%*%diag(p*(1-p))%*%X
+sgvals_h<-svd(h)[["d"]]
+cd_2 <- max(sgvals_h)/min(sgvals_h)
+```
+Compare the two condition numbers:
+```{r}
+cd_2-cd_1
+```
+From the value above, we can conclude that, for this specific matrix $X$, the condition number of logistic variation hessian matrix is much larger than that of hessian matrix.
+
+
+## CASL Number 2 in Exercises 5.8.
+
+```{r}
+# Args:
+#     X: A numeric data matrix.
+#     y: Response vector.
+#     family: Instance of an R ‘family‘ object.
+#     maxit: Integer maximum number of iterations.
+#     tol: Numeric tolerance parameter.
+#     lambda: a penalty term
+#
+# Returns:
+#     Regression vector beta of length ncol(X).
+irwls_glm<-function(X, y, family, maxit=25, tol=1e-10, lambda){
+beta <- rep(0,ncol(X))
+for(j in 1:maxit){
+  b_old <- beta
+  eta <- X %*% beta
+  mu <- family$linkinv(eta)
+  mu_p <- family$mu.eta(eta)
+  z <- eta + (y - mu) / mu_p
+  W <- as.numeric(mu_p^2 / family$variance(mu))
+  XtX <- crossprod(X, diag(W) %*% X)
+  Xtz <- crossprod(X, W * z)
+  # Add the penalty (credit to Wenfeng zhang)
+  V<-XtX+diag(lambda,dim(XtX)[1])
+  beta<-solve(V, Xtz)
+  if(sqrt(crossprod(beta - b_old)) < tol) break
+}
+beta
+}
+``` 
+
+```{r}
+# using data to check the result of the function
+n <- 1000; p <- 3
+beta <- c(0.2, 2, 1)
+X <- cbind(1, matrix(rnorm(n * (p- 1)), ncol = p - 1))
+mu <- 1 - pcauchy(X %*% beta)
+y <- as.numeric(runif(n) > mu)
+# Test the function casl_glm_irwls_ridge
+beta <- irwls_glm(X, y,
+family = binomial(link = "cauchit"),
+lambda = 0.1)
+beta
+```
+
+# Problem 3
+Please see sparse_matrix.r in directory R
+
