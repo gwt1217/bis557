@@ -184,7 +184,7 @@ for(j in 1:maxit){
   W &lt;- as.numeric(mu_p^2 / family$variance(mu))
   XtX &lt;- crossprod(X, diag(W) %*% X)
   Xtz &lt;- crossprod(X, W * z)
-  # Add the penalty (credit to Wenfeng zhang)
+  # Add the penalty 
   V&lt;-XtX+diag(lambda,dim(XtX)[1])
   beta&lt;-solve(V, Xtz)
   if(sqrt(crossprod(beta - b_old)) &lt; tol) break
@@ -203,9 +203,9 @@ family = binomial(link = &quot;cauchit&quot;),
 lambda = 0.1)
 beta</code></pre>
 <pre><code>##           [,1]
-## [1,] 0.3059294
-## [2,] 1.9690684
-## [3,] 1.0710916</code></pre>
+## [1,] 0.2261105
+## [2,] 2.0030825
+## [3,] 0.9396288</code></pre>
 </div>
 <div id="problem-3" class="section level1">
 <h1>Problem 3</h1>

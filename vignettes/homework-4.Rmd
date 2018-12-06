@@ -70,7 +70,7 @@ for(j in 1:maxit){
   W <- as.numeric(mu_p^2 / family$variance(mu))
   XtX <- crossprod(X, diag(W) %*% X)
   Xtz <- crossprod(X, W * z)
-  # Add the penalty (credit to Wenfeng zhang)
+  # Add the penalty 
   V<-XtX+diag(lambda,dim(XtX)[1])
   beta<-solve(V, Xtz)
   if(sqrt(crossprod(beta - b_old)) < tol) break
